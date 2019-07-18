@@ -16,19 +16,22 @@ impl Server {
     }
 }
 
+const BUFFER_SIZE: usize = 16;
+
 impl core::Server for Server {
-    fn listen(&self) -> [u8; 10] {
-        let mut buf: [u8; 10] = [0; 10];
+    fn listen(&self) -> Vec<u8> {
+        let mut buffer: [u8; BUFFER_SIZE] = [0; BUFFER_SIZE];
         let recv_from = format!("{}:{}", self.address, self.port);
 
         //let socket =
-        match UdpSocket::bind(recv_from) {//format!("{}:{}", self.address, self.port))
+        match UdpSocket::bind(recv_from) {
             Ok(s) => {
                 //loop {
                 /*let (number_of_bytes, _src_addr) = */
-                match s.peek_from(&mut buf) {
-                    Ok(data) => {
-                        println!("Server Received: {:?}", data);
+                match s.peek_from(&mut buffer) {
+                    Ok((len, _)) => {
+                        println!("Server received {} bytes!", len);
+                        return Vec::from(&mut buffer[..len])
                         //data
                     },
                     Err(x) => {
@@ -37,14 +40,13 @@ impl core::Server for Server {
                     },
                 };
                 //}
-                //let val = &mut buf[..10];
             },
             Err(e) => {
                 println!("Server Bind Error: {:?}", e)
             }
         }
 
-        return buf
+        return Vec::new()
     }
 }
 

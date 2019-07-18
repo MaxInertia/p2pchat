@@ -26,10 +26,10 @@ pub fn run(client: impl Client, server: impl Server + std::marker::Send  + 'stat
     });
 
     // send content via client
-    let content: &[u8; 10] = b"hello pop!";
+    let content: Vec<u8> = Vec::from("el psi congroo!");
     //let msg = udp::Message{content};
-    println!("Client sending data");
-    let ok = client.send(content);
+    println!("Client sending {} bytes!", content.len());
+    let ok = client.send(&content);
     println!("client.send({:?}) == {}", content, ok);
 
     // wait and join

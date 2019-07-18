@@ -23,19 +23,15 @@ impl Client {
 
 /// Implementation of trait client::Client for udp::Client
 impl core::Client for Client {
-    fn send(&self, content: &[u8; 10]/*&core::Message*/) -> bool {
-        // TODO: Implement
-
+    fn send(&self, content: &Vec<u8>/*&core::Message*/) -> bool {
         let dest_addr = format!("{}:{}", self.address, self.server_port); //"127.0.0.1:42336";
-        println!("dest_addr = {}", dest_addr);
         let bind_addr = format!("{}:{}", self.address, self.client_port);
-        println!("bind_addr = {}", bind_addr);
 
         //let socket =
         match UdpSocket::bind(bind_addr) { //format!("{}:{}", self.address, self.port)) {
             Ok(s) => {
                 println!("Client Bind returned OK({:?})", s);
-                match s.send_to(&content[..10], dest_addr) {
+                match s.send_to(&content, dest_addr) {
                     Ok(data) => {
                         println!("Client Send returned OK({:?})", data);
                         return true

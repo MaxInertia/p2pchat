@@ -4,11 +4,11 @@ use crate::core;
 
 #[derive(Debug)]
 pub struct Message {
-    content: [u8; 10]//&'static [u8]
+    content: Vec<u8>
 }
 
 impl core::Message for Message {
-    fn bytes(&self) -> [u8; 10] {//&'static [u8] {
-        return self.content
+    fn bytes(&self) -> &Vec<u8> {
+        return &self.content
     }
 }
